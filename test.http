@@ -1,0 +1,49 @@
+### success execution
+POST http://localhost:8080/api/v1
+Content-Type: application/json
+
+{
+  "urls": ["http://www.google.com", "http://www.google.com", "http://www.google.com", "http://www.google.com"]
+}
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### failure execution (method not allowed)
+PATCH http://localhost:8080/api/v1
+Content-Type: application/json
+
+{
+  "urls": ["http://www.google.com", "http://www.google.com", "http://www.google.com", "http://www.google.com"]
+}
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 405, "Response status is not 405");
+    });
+%}
+
+### failure execution (too much urls)
+POST http://localhost:8080/api/v1
+Content-Type: application/json
+
+{
+  "urls": [
+    "http://www.google.com", "http://www.google.com", "http://www.google.com", "http://www.google.com",
+    "http://www.google.com", "http://www.google.com", "http://www.google.com", "http://www.google.com",
+    "http://www.google.com", "http://www.google.com", "http://www.google.com", "http://www.google.com",
+    "http://www.google.com", "http://www.google.com", "http://www.google.com", "http://www.google.com",
+    "http://www.google.com", "http://www.google.com", "http://www.google.com", "http://www.google.com",
+    "http://www.google.com", "http://www.google.com", "http://www.google.com", "http://www.google.com"
+  ]
+}
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 400, "Response status is not 400");
+    });
+%}
+
